@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: KOMBI — Kinetics-Optimized Markovian Bias Integration
+message: If you use this software, please cite both the software and the associated paper.
+type: software
+authors:
+  - given-names: Tiejun
+    family-names: Wei
+    affiliation: University College London
+  - given-names: Bálint
+    family-names: Dudas
+    affiliation: University College London
+  - given-names: Edina
+    family-names: Rosta
+    email: e.rosta@ucl.ac.uk
+    affiliation: University College London
+    orcid: "https://orcid.org/0000-0002-9823-4766"
+repository-code: "https://github.com/rostaresearch/KOMBI"
+license: MIT
+version: "0.1.0"
+preferred-citation:
+  type: article
+  title: Kinetics-Optimized Enhanced Sampling Using Mean First Passage Times
+  authors:
+    - given-names: Tiejun
+      family-names: Wei
+    - given-names: Bálint
+      family-names: Dudas
+    - given-names: Edina
+      family-names: Rosta
+  year: 2026
+  journal: Journal of Chemical Physics
+  notes: "submitted to JCP Special Topic: Festschrift in honor of Gerhard Hummer"

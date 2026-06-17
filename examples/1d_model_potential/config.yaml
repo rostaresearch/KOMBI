@@ -1,0 +1,32 @@
+# 1D model potential — smoke-test config (fast: < 1 minute total).
+# For paper-quality results, increase n_iterations, n_gaussians and
+# lbfgs_restarts_per_gaussian to the values reported in the manuscript.
+
+name: model_1d
+system: model_1d
+out_dir: runs/model_1d
+seed: 42
+
+# CV discretisation: 50 bins on [0, 2π]
+cv_range: [0.0, 6.283185307179586]
+cv_bins: 50
+
+# Endpoints
+start_cv: 1.0       # near the lower well
+target_cv: 5.5      # near the upper well
+
+# Bias
+n_gaussians: 5
+bias_amplitude_bounds: [-3.0, 3.0]
+bias_width_bounds: [0.2, 1.0]
+lbfgs_tol: 1.0e-3
+lbfgs_restarts_per_gaussian: 2   # 2 × 5 = 10 restarts per iteration
+
+# Thermodynamics
+temperature: 300.0
+
+# KOMBI loop
+n_iterations: 3
+integrator_dt_ps: 0.1
+
+verbose: true
