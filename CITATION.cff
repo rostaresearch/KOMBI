@@ -30,3 +30,20 @@ preferred-citation:
   year: 2026
   journal: Journal of Chemical Physics
   notes: "submitted to JCP Special Topic: Festschrift in honor of Gerhard Hummer"
+references:
+  - type: article
+    title: Kinetics-Optimized Enhanced Sampling Using Mean First Passage Times
+    authors:
+      - given-names: Tiejun
+        family-names: Wei
+      - given-names: Bálint
+        family-names: Dudas
+      - given-names: Edina
+        family-names: Rosta
+    year: 2024
+    url: "https://arxiv.org/abs/2406.08964"
+    identifiers:
+      - type: other
+        value: "arXiv:2406.08964"
+        description: "arXiv preprint identifier"
+    notes: "preprint version of the manuscript"

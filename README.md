@@ -1,5 +1,9 @@
 # KOMBI — Kinetics-Optimised Markov-state Bias Iteration
 
+![KOMBI workflow](docs/github_TOC.png)
+
+> **Preprint:** Wei, Dudas & Rosta, *Kinetics-Optimized Enhanced Sampling Using Mean First Passage Times*, [arXiv:2406.08964](https://arxiv.org/abs/2406.08964) (2024).
+
 Python package implementing the MFPT-driven adaptive-bias scheme
 described in the manuscript. Given a target endpoint on a CV, KOMBI
 builds a discrete Markov model of the current trajectory ensemble,
@@ -46,8 +50,6 @@ kombi/
 ├── alt_optimisers/        — alternative bias-optimisation strategies
 │   └── CE_Opt/            — Cross-Entropy method variant (vs. L-BFGS-B)
 ├── pyproject.toml         — PEP 621, pip-installable
-├── MECHANISM_AUDIT.md     — protocol for the v2 paper's Ω_J / Ω_ρ / D_edge / R_unsup audit
-│                            applied to every KOMBI-optimised system in this repo
 └── CITATION.cff
 ```
 
