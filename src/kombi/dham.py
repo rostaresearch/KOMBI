@@ -97,16 +97,26 @@ class DHAM:
     def unbias_transition_matrix(self, M_biased: np.ndarray, bias: np.ndarray) -> np.ndarray:
         """Apply the DHAM correction to a biased transition matrix.
 
-        ``M_unbiased[i,j] = M_biased[i,j] · exp((u_i + u_j) / (2 kT))`` for
-        off-diagonal entries, with diagonal restored so that columns sum to 1
-        and no negative entries remain.
+        Column-stochastic convention: ``M[i, j] = P(state_j -> state_i)``, so
+        the reweight factor that inverts the detailed-balance-preserving bias
+        tilt is **antisymmetric** in (i, j):
+
+        ``M_unbiased[i, j] = M_biased[i, j] * exp((u_i - u_j) / (2 k_B T))``
+
+        applied to every entry, with the diagonal then restored so each column
+        sums to unity. The antisymmetric form is Rosta & Hummer, JCTC 11, 276
+        (2015); using the symmetric ``exp((u_i + u_j)/(2 k_B T))`` here is a
+        recurring bug — it fails to invert the tilt and gives biased free
+        energies. A regression test in ``tests/test_dham.py`` guards against
+        reintroducing it.
 
         Parameters
         ----------
         M_biased
             Column-stochastic transition matrix from the biased trajectory.
         bias
-            Per-state bias values ``u_i`` (length n_states), kJ/mol.
+            Per-state bias values ``u_i`` (length n_states), same energy units
+            as ``self.kbT``.
 
         Returns
         -------
@@ -117,9 +127,8 @@ class DHAM:
         u = np.asarray(bias, dtype=float).reshape(-1)
         assert M.shape[0] == M.shape[1] == u.size
 
-        # f_ij = exp((u_i + u_j) / (2 kT))
-        F = np.exp((u[:, None] + u[None, :]) / (2.0 * self.kbT))
-        np.fill_diagonal(F, 0.0)
+        # Antisymmetric reweight: F[i, j] = exp((u_i - u_j) / (2 k_B T))
+        F = np.exp((u[:, None] - u[None, :]) / (2.0 * self.kbT))
         M_unb = M * F
         # zero negatives (numerical), zero diagonal, then renormalise columns.
         M_unb = np.clip(M_unb, 0.0, None)
