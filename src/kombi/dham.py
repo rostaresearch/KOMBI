@@ -3,8 +3,9 @@
 Recovers the unbiased Markov transition matrix from biased trajectories via
 the standard Rosta–Hummer reweighting
 
-    K_unbiased[i,j] = K_biased[i,j] · exp( β · (u_i + u_j) / 2 )
+    K_unbiased[i,j] = K_biased[i,j] · exp( β · (u_i - u_j) / 2 )
 
+(column convention, K[i,j] = rate j -> i; the factor is antisymmetric in i, j)
 applied to off-diagonal transitions, with diagonal restored so that columns
 sum to 1.  The previous prototype had this same math but with the lag time
 and convergence threshold hardcoded inside the per-system folders; this

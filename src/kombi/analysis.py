@@ -12,6 +12,7 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import numpy as np
 
+from kombi.dham import DHAM
 from kombi.io import ensure_parent
 from kombi.msm import MSM
 
@@ -66,15 +67,11 @@ def recover_unbiased_fes(msm_biased: MSM, bias_array: np.ndarray) -> np.ndarray:
     M_b = msm_biased.M
     assert M_b is not None
     u = np.asarray(bias_array).reshape(-1)
-    F = np.exp((u[:, None] + u[None, :]) / (2.0 * msm_biased.kbT))
-    np.fill_diagonal(F, 0.0)
-    M_unb = M_b * F
-    M_unb = np.clip(M_unb, 0.0, None)
-    np.fill_diagonal(M_unb, 0.0)
-    col_sums = M_unb.sum(axis=0)
-    for j in range(M_unb.shape[1]):
-        if col_sums[j] > 0:
-            M_unb[:, j] /= col_sums[j]
+    # Use the one DHAM reweight (antisymmetric exp((u_i - u_j)/2kT), column
+    # convention); this function previously carried its own copy with the
+    # symmetric exp((u_i + u_j)/2kT) factor, which does not invert the tilt.
+    dham = DHAM(cv_grid=np.arange(u.size, dtype=float), kbT=msm_biased.kbT)
+    M_unb = dham.unbias_transition_matrix(M_b, u)
 
     msm_unb = MSM(kbT=msm_biased.kbT, time_step=msm_biased.time_step)
     msm_unb.build_from_M(M_unb, dim=msm_biased.num_dimensions, time_step=msm_biased.time_step)
